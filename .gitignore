@@ -1,7 +1,8 @@
 # Compiled Lua sources
 luac.out
-.idea/*
-.vscode/*
+.idea
+mqtt-server/node_modules
+.vscode
 # luarocks build files
 *.src.rock
 *.zip

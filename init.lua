@@ -5,21 +5,21 @@ function startup()
         print("Running")
         file.close("init.lua")
         -- the actual application is stored in 'application.lua'
-        -- dofile("application.lua")
+        dofile("app.lua")
     end
 end
 
 -------------
 -- define
 -------------
-IO_LED = 1
-IO_LED_AP = 2
+IO_LED_AP = 1
+IO_LED = 2
 IO_BTN_CFG = 3
 IO_BLINK = 4
 
-TMR_WIFI = 4
-TMR_BLINK = 5
-TMR_BTN = 6
+TMR_WIFI = 0
+TMR_BLINK = 1
+TMR_BTN = 2
 
 gpio.mode(IO_LED, gpio.OUTPUT)
 gpio.mode(IO_LED_AP, gpio.OUTPUT)
@@ -79,7 +79,7 @@ wifi_disconnect_event = function(T)
     return 
   end
   -- total_tries: how many times the station will attempt to connect to the AP. Should consider AP reboot duration.
-  local total_tries = 5
+  local total_tries = 10
   print("\nWiFi connection to AP("..T.SSID..") has failed!")
 
   --There are many possible disconnect reasons, the following iterates through 
@@ -101,7 +101,7 @@ wifi_disconnect_event = function(T)
   else
     wifi.sta.disconnect()
     print("Aborting connection to AP!")
-    getMartConfig();
+    -- getMartConfig();
     disconnect_ct = nil  
   end
 end
@@ -172,6 +172,9 @@ end
 function hasDefaultconfig()
   local ssid, password, bssid_set, bssid=wifi.sta.getdefaultconfig();
   if ssid ~= '' then
+    if ssid == "PABank-Web" then
+      wifi.sta.setmac("14:10:9f:d0:9c:57")
+    end
     print("good! has Defaultconfig!")
   else
     print("don't has Defaultconfig!")
@@ -180,4 +183,6 @@ function hasDefaultconfig()
 end
 
 print('Setting up WIFI...')
+wifi.sta.setmac("14:10:9f:d0:9c:57")
+-- setSTAConfig('PABank-Web', '')
 hasDefaultconfig()
