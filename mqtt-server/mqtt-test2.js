@@ -9,6 +9,7 @@ const client = mqtt.connect({
 });
 
 client.on('connect', () => {
+    console.log("connect!")
     client.subscribe('/nodemcu/1520350/fromnode');
     client.publish('/nodemcu/1520350/tonode', JSON.stringify({type:'set', num: 1, stusts: 0}))
 });

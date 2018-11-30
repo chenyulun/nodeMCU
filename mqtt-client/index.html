@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="./mqttws31.min.js"></script>
+    </head>
+    <body>
+        mqtttest
+    </body>
+    <script>
+        client = new Paho.MQTT.Client("127.0.0.1", Number(1884), "webs");//建立客户端实例
+        client.connect({
+            userName: 'chenlilan',
+            password: '12345678',
+            onSuccess:onConnect
+        });//连接服务器并注册连接成功处理事件
+        function onConnect() {
+            console.log("onConnected");
+            client.subscribe('/nodemcu/1520350/fromnode');//订阅主题
+        }
+        client.onConnectionLost = onConnectionLost;//注册连接断开处理事件
+        client.onMessageArrived = onMessageArrived;//注册消息接收处理事件
+        function onConnectionLost(responseObject) {
+            if (responseObject.errorCode !== 0) {
+                console.log("onConnectionLost:"+responseObject.errorMessage);
+                console.log("连接已断开");
+            }
+        }
+        function onMessageArrived(message) {
+        console.log("收到消息:"+message.payloadString);
+        }
+        //发送消息
+        // message = new Paho.MQTT.Message(JSON.stringify({type:'set', num: 1, stusts: 1}));
+        // message.destinationName = "/nodemcu/1520350/tonode";
+        // client.send(message);
+    </script>
+</html>

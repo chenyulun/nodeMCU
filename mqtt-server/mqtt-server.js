@@ -11,7 +11,17 @@ const ascoltatore = {
 
 const settings = {
     port: 1883,
-    backend: ascoltatore
+    stats: false,
+    backend: ascoltatore,
+    persistence: {
+        factory: mosca.persistence.Memory
+    },
+    http: {
+        port: 1884,
+        static: __dirname + "/static",
+        bundle: true
+    },
+    // onlyHttp: true
 };
 
 const server = new mosca.Server(settings);

@@ -41,6 +41,9 @@ local function mqtt_start()
         consume_data(tabe1)
       end
     end)
+    m:on('offline', function ()
+        print("disconnect!")
+    end)
     -- Connect to broker
     m:connect(config.HOST, config.PORT, 0, 1, function(con)
         register_myself()
